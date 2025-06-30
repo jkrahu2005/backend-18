@@ -1,0 +1,27 @@
+[build]
+  command = "npm install && npm run build"
+  functions = "netlify/functions"
+  publish = "public"
+
+[context.production.environment]
+  NODE_VERSION = "18"
+  NODE_ENV = "production"
+
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/index/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[[headers]]
+  for = "/.netlify/functions/*"
+  [headers.values]
+    Access-Control-Allow-Origin = "*"
+    Cache-Control = "public, max-age=300, stale-while-revalidate=300"
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
